@@ -1,6 +1,6 @@
 <?php
-$heroku_db_url = parse_url(env('DATABASE_URL', "postgres://admin:tdc@localhost:5432/uniti_development"));
-$heroku_db_cr_url = parse_url(env('DATABASE_URL_CR', "postgres://admin:tdc@localhost:5432/Ceal_Reporter"));
+$heroku_db_url = parse_url(env('DATABASE_URL', "postgres://admin:tdc@localhost:5432/Ceal_Reporter"));
+$heroku_db_dpt_url = parse_url(env('DATABASE_URL_DPT',"postgres://admin:tdc@localhost:5432/uniti_development" ));
 
 return [
 
@@ -57,10 +57,10 @@ return [
 
         'pgsql_dpt' => [
             'driver' => 'pgsql',
-            'host'     => $heroku_db_url['host'],
-            'database' => substr($heroku_db_url['path'], 1),
-            'username' => $heroku_db_url['user'],
-            'password' => $heroku_db_url['pass'],
+            'host'     => $heroku_db_dpt_url['host'],
+            'database' => substr($heroku_db_dpt_url['path'], 1),
+            'username' => $heroku_db_dpt_url['user'],
+            'password' => $heroku_db_dpt_url['pass'],
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
@@ -69,10 +69,10 @@ return [
 
         'pgsql_cr' => [
             'driver' => 'pgsql',
-            'host'     => $heroku_db_cr_url['host'],
-            'database' => substr($heroku_db_cr_url['path'], 1),
-            'username' => $heroku_db_cr_url['user'],
-            'password' => $heroku_db_cr_url['pass'],
+            'host'     => $heroku_db_url['host'],
+            'database' => substr($heroku_db_url['path'], 1),
+            'username' => $heroku_db_url['user'],
+            'password' => $heroku_db_url['pass'],
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
