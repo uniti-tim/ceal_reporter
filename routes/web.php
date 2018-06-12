@@ -14,3 +14,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@welcome');
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('quotes/piechart_progress', 'QuotesController@progressPieChart');
+Route::get('quotes/volume_chart', 'QuotesController@volumeChart');

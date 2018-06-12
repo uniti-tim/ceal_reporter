@@ -5,8 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {{ Html::favicon( 'favicon.ico' ) }}
     <title>@yield('title_prefix', config('adminlte.title_prefix', ''))
-@yield('title', config('adminlte.title', 'CEAL Reporter'))
-@yield('title_postfix', config('adminlte.title_postfix', ''))</title>
+    @yield('title', config('adminlte.title', 'CEAL Reporter'))
+    @yield('title_postfix', config('adminlte.title_postfix', ''))</title>
+
+    @if(isset($page))
+      <meta name="page" content="{{$page}}">
+    @endif
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -63,6 +68,7 @@
 @endif
 
 @yield('adminlte_js')
+  <script src="{{ asset('js/app.js') }}"></script>
 
 </body>
 </html>

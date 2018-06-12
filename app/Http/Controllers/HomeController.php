@@ -25,6 +25,7 @@ class HomeController extends Controller
     public function index(){
 
         return view('home',[
+          'page'=>'home',
           'sales_rep_count' => Sales_Rep::get()->count(),
           'customer_count' => Customer::get()->count(),
           'quote_count' => Quote::get()->count(),
