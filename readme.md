@@ -6,5 +6,3 @@ This application is a simple application that interfaces with the DPT tool with 
 | ------------- | ------------- |
 | PORT          | 8080          |
 | Waffle  | [Board](https://waffle.io/uniti-tim/ceal_reporter)  |
-
-You can find the application on port `8080` on Test and Prod.
