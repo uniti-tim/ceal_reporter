@@ -21,7 +21,7 @@ class Quote extends Model
     $in_progress = 0;
 
     foreach($quotes as $quote){
-      if(!empty($quote->sales_force_parent_opportunity_id)){
+      if(!empty($quote->status)){
         $complete++;
       }else{
         $in_progress++;
@@ -67,24 +67,51 @@ class Quote extends Model
     //collect and get all unique days of quotes created
     foreach($quotes as $quote){
       $date = date('m/01/Y',strtotime($quote->created_at));
-      if( isset(json_decode($quote->data)->commissions->monthlyCommission) && !empty($quote->sales_force_parent_opportunity_id) ){
-        $commission = number_format( json_decode($quote->data)->commissions->monthlyCommission ,2);
+
+      if($quote->status){
+        $mrr = 0;
+        $quote_data = json_decode($quote->data);
+        $products = $quote_data->products;
+        $bandwidths = $quote_data->bandwidths;
+        
+        if( count($products) > 0){
+          $mrr += Quote::getBasicTotal($products, 'products');
+        }
+
+        if( count($bandwidths) > 0){
+          $mrr += Quote::getBasicTotal($bandwidths, 'bandwidths');
+        }
+
+        $totalMRR = number_format( $mrr ,2);
       }else{
-        $commission = 0;
+        $totalMRR = 0;
       }
 
       // if date exists by key in array already then add commision to existing value
       if( array_key_exists( $date, $data)  ){
-        $data[$date] += $commission;
+        $data[$date] += floatval(preg_replace('/[^\d.]/', '', $totalMRR));
       }else{
         array_push($results['labels'], date("F Y", strtotime($date)) );
-        $data[$date] = $commission;
+        $data[$date] = floatval(preg_replace('/[^\d.]/', '', $totalMRR));
       }
 
     }
 
     $results['data'] = $data;
     return json_encode($results);
+  }
+
+
+  private static function getBasicTotal($item_list, $type){
+    $total = 0;
+    foreach( $item_list as $item){
+      if($type === 'products'){
+          $total += $item->sales_price * $item->quantity;
+      }elseif ($type === 'bandwidths') {
+          $total += $item->sales_price;
+      }
+    }
+    return $total;
   }
 
 
