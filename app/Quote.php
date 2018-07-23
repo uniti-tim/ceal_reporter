@@ -35,19 +35,40 @@ class Quote extends Model
   public static function getQuoteVolume(){
     $quotes = Quote::orderBy('created_at','ASC')->get();
     $results =[
-      'label' => 'Quotes Created',
+      ['label' => 'Quotes Created',
       'data' => [],
       'borderColor'=> "rgb(75, 192, 192)",
       'fill'=> false,
+      ],
+      ['label' => 'Quotes Completed',
+      'data' => [],
+      'backgroundColor' => "rgb(243, 156, 18)",
+      'borderColor' => "rgb(194, 125, 14)",
+      'borderWidth' => '2',
+      'fill'=> false,]
     ];
-    $dates = [];
-    $data = [];
+    $dates_all = [];
+    $dates_completed = [];
+
+    $data_all = [];
+    $data_completed = [];
 
     //collect and get all unique days of quotes created
     foreach($quotes as $quote){
-      array_push($dates, date('m/d/Y',strtotime($quote->created_at)) );
+      array_push($dates_all, date('m/d/Y',strtotime($quote->created_at)) );
+
+      //if quote complete...
+      if($quote->status){
+        array_push($dates_completed, date('m/d/Y',strtotime($quote->updated_at)) );
+      }
     }
-    $results['data'] = array_count_values($dates);
+
+
+
+    $results[0]['data'] = array_count_values($dates_all);
+      $data_completed = array_count_values($dates_completed);
+      uksort( $data_completed, 'self::sortByDate');
+    $results[1]['data'] = $data_completed;
 
     return json_encode($results);
   }
@@ -73,7 +94,7 @@ class Quote extends Model
         $quote_data = json_decode($quote->data);
         $products = $quote_data->products;
         $bandwidths = $quote_data->bandwidths;
-        
+
         if( count($products) > 0){
           $mrr += Quote::getBasicTotal($products, 'products');
         }
@@ -112,6 +133,10 @@ class Quote extends Model
       }
     }
     return $total;
+  }
+
+  private static function sortByDate($a, $b){
+    return strtotime($a) - strtotime($b);
   }
 
 

@@ -46,32 +46,57 @@ function loadQuoteVolumeChart($quotesVolume, $quotesVolumeLoader){
     },
     success: function(result){
       let results = JSON.parse(result);
-      let formattedData = [];
+      let formattedDataAll = [];
+      let formattedDataComplete = [];
       $quotesVolumeLoader.remove();
       $quotesVolume.removeClass('hidden');
-      for (var date in results.data) {
-        formattedData.push({
+
+      //format data for total quotes
+      for (var date in results[0].data) {
+        formattedDataAll.push({
           x: new Date(date),
-          y: results.data[date],
+          y: results[0].data[date],
         });
       }
+
+      //format data for completed quotes
+      for (var date in results[1].data) {
+        formattedDataComplete.push({
+          x: new Date(date),
+          y: results[1].data[date],
+        });
+      }
+
       var ctx = document.getElementById('quotes_volume').getContext('2d');
       var myChart = new Chart(ctx, {
-          type: 'line',
+          type: 'bar',
           data: {
-              datasets: [{
-                  label:results.label,
-                  data: formattedData,
-                  borderColor: "rgb(75, 192, 192)",
-                  fill: true,
-              }]
+              datasets: [
+                {
+                  label:results[0].label,
+                  data: formattedDataAll,
+                  borderColor: results[0].borderColor,
+                  fill: results[0].fill,
+                  type: "line",
+                },
+                {
+                  label:results[1].label,
+                  data: formattedDataComplete,
+                  backgroundColor: results[1].backgroundColor,
+                  borderColor: results[1].borderColor,
+                  borderWidth: results[1].borderWidth,
+                  fill: results[1].fill,
+                  lineTension: 0,
+                  type: 'bar',
+                },
+            ]
           },
             options: {
               scales: {
                   xAxes: [{
                       type: 'time',
                       time: {
-                        unit: 'day'
+                        unit: 'month'
                       },
                       distribution: 'series',
                   }],
