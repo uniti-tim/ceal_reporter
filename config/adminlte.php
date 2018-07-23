@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'CEAL Reporter',
+    'title' => 'CEAL Reporter :: Testing',
 
     'title_prefix' => '',
 
@@ -30,9 +30,9 @@ return [
     |
     */
 
-    'logo' => '<b>CEAL</b> Reporter',
+    'logo' => '<b>CEAL</b> Reporter Testing',
 
-    'logo_mini' => '<b>C</b> Rep',
+    'logo_mini' => '<b>CR</b>',
 
     /*
     |--------------------------------------------------------------------------
