@@ -72,7 +72,7 @@
      <div class="row">
       <div class="col-md-6">
           <div class="panel panel-default">
-              <div class="panel-heading"><b>Monthly Recurring Revenue</b></div>
+              <div class="panel-heading"><b>Monthly Recurring Revenue - Quoted</b></div>
               <div class="panel-body">
                    <div id='quotes_mrc_loader' class="text-center" style='width:100%'>
                      <i class="fa fa-spinner fa-spin fa-5x" style="color:#d1d1d1"></i>
