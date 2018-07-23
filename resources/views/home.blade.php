@@ -1,7 +1,5 @@
 @extends('adminlte::page')
 
-@section('title', 'CEAL Reporter')
-
 @section('content_header')
     <h1>DPT Overview</h1>
 @stop

@@ -28,7 +28,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                      {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
                     </a>
                 </div>
 
