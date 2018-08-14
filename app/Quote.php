@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Quote extends Model
 {
@@ -121,6 +122,49 @@ class Quote extends Model
     $results['data'] = $data;
     return json_encode($results);
   }
+
+  public static function getThisMonthQuoteMRC(){
+    $quotes = Quote::where('created_at','>',Carbon::now()->startofMonth())
+              ->orderBy('created_at','ASC')
+              ->get();
+    $dates = [];
+    $data = [];
+
+    //collect and get all unique days of quotes created
+    foreach($quotes as $quote){
+      $date = date('m/01/Y',strtotime($quote->created_at));
+
+      if($quote->status){
+        $mrr = 0;
+        $quote_data = json_decode($quote->data);
+        $products = $quote_data->products;
+        $bandwidths = $quote_data->bandwidths;
+
+        if( count($products) > 0){
+          $mrr += Quote::getBasicTotal($products, 'products');
+        }
+
+        if( count($bandwidths) > 0){
+          $mrr += Quote::getBasicTotal($bandwidths, 'bandwidths');
+        }
+
+        $totalMRR = number_format( $mrr ,2);
+      }else{
+        $totalMRR = 0;
+      }
+
+      // if date exists by key in array already then add commision to existing value
+      if( array_key_exists( $date, $data)  ){
+        $data[$date] += floatval(preg_replace('/[^\d.]/', '', $totalMRR));
+      }else{
+        $data[$date] = floatval(preg_replace('/[^\d.]/', '', $totalMRR));
+      }
+
+    }
+
+    return $data[array_keys($data)[0]];
+  }
+
 
 
   private static function getBasicTotal($item_list, $type){

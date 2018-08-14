@@ -5,6 +5,9 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+use App\MailReporter;
+use Carbon\Carbon;
+
 class Kernel extends ConsoleKernel
 {
     /**
@@ -24,8 +27,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function(){
+          MailReporter::makeMonthlyReport();
+        })->when(function () {
+            return Carbon::now()->endOfMonth()->isToday();
+        });
     }
 
     /**
