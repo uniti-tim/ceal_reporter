@@ -34,6 +34,8 @@ class MailReporter extends Model
     private static function sendMonthlyReport($data_overall, $data_monthly) {
       $addresses = [
         'timothy.carambat@uniti.com',
+        'Troy.Bourque@uniti.com',
+        'Mark.Souhlas@uniti.com',
       ];
 
       Mail::send('emails.sendMonthlyReport',
