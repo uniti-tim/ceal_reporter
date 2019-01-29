@@ -34,7 +34,6 @@ class MailReporter extends Model
     private static function sendMonthlyReport($data_overall, $data_monthly) {
       $addresses = [
         'timothy.carambat@uniti.com',
-        'Troy.Bourque@uniti.com',
         'Mark.Souhlas@uniti.com',
       ];
 
@@ -43,7 +42,7 @@ class MailReporter extends Model
       function ($message) use ($addresses)
         {
             $message->subject("CEAL Reporter Summary - ".Carbon::now()->format('F Y'));
-            $message->from('cealreporter@uniti.com', 'CEAL Reporter');
+            $message->from('DPT_Helpdesk@ceal.ug.uniti.com', 'CEAL Reporter');
             $message->to($addresses);
         });
     }
